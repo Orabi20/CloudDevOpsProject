@@ -9,7 +9,7 @@ pipeline {
     CLUSTER_NAME = 'my-eks-cluster'
     NAMESPACE = 'ivolve'
     // SERVICE_NAME = 'hello-eyego-service'
-    // DEPLOYMENT_FILE = 'deployment.yaml'
+    DEPLOYMENT_FILE = 'deployment.yml'
     // SERVICE_FILE = 'service.yaml'
   }
 
@@ -18,8 +18,8 @@ pipeline {
     stage('Login to AWS ECR') {
       steps {
         withCredentials([
-          string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
-          string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY'),
+          string(credentialsId: 'aws-access-key',    variable: 'AWS_ACCESS_KEY_ID'),
+          string(credentialsId: 'aws-secret-key',    variable: 'AWS_SECRET_ACCESS_KEY'),
           string(credentialsId: 'aws-session-token', variable: 'AWS_SESSION_TOKEN')
         ]) {
           sh '''
@@ -36,9 +36,11 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh '''
+        dir('nodejs_app'){
+          sh '''
           docker build -t $ECR_REPO:$IMAGE_TAG .
-        '''
+          '''
+        }
       }
     }
 
@@ -51,24 +53,71 @@ pipeline {
       }
     }
 
-    stage('Update K8s Deployment') {
+    stage('Scan Docker Image Using Trivy') {
       steps {
-         dir('k8s') {
-            sh '''
-              aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
-              
-              kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
-
-              sed -i "s|image:.*|image: $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG|" $DEPLOYMENT_FILE
-              
-              kubectl apply -n $NAMESPACE -f $DEPLOYMENT_FILE
-              kubectl apply -n $NAMESPACE -f $SERVICE_FILE
-
-              kubectl get svc -n $NAMESPACE $SERVICE_NAME -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-            '''
-        }
+          sh '''
+          trivy image --format json --output trivy-report.json your-image-name
+          # Example:
+          trivy image --format json --output trivy-report.json ahmedorabi/demo-app
+          '''
       }
     }
+
+    stage('Cleanup Local Images') {
+            steps {
+                sh """
+                    docker rmi $ECR_REPO:$IMAGE || true
+                    docker rmi $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG || true
+                """
+            }
+        }
+
+    stage('Clone ArgoCD Manifests Repo') {
+            steps {
+                 dir('argocd_k8s_manifest/nodejs_app_deployment') {
+                    git branch: 'master',
+                        credentialsId: GIT_CREDENTIALS_ID,
+                        url: 'https://github.com/Orabi20/CloudDevOpsProject'
+                 }
+            }
+        }
+
+    stage('Update Deployment File with New Image') {
+            steps {
+                 dir('argocd_k8s_manifest/nodejs_app_deployment') {
+                    withCredentials([usernamePassword(credentialsId: GIT_CREDENTIALS_ID, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        sh '''
+                            git config user.name "jenkins"
+                            git config user.email "jenkins@example.com"
+
+                            sed -i 's|image:.*|image: '"$ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG"'|' $DEPLOYMENT_FILE
+                            git add $DEPLOYMENT_FILE
+                            git commit -m "Update image to $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG" || echo "No changes to commit"
+                 }
+                            git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/Orabi20/CloudDevOpsProject.git
+                        '''
+                    }
+                }
+            }
+        }
+    // stage('Update K8s Deployment') {
+    //   steps {
+    //      dir('k8s') {
+    //         sh '''
+    //           aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
+              
+    //           kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
+
+    //           sed -i "s|image:.*|image: $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG|" $DEPLOYMENT_FILE
+              
+    //           kubectl apply -n $NAMESPACE -f $DEPLOYMENT_FILE
+    //           kubectl apply -n $NAMESPACE -f $SERVICE_FILE
+
+    //           kubectl get svc -n $NAMESPACE $SERVICE_NAME -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+    //         '''
+    //     }
+    //   }
+    // }
   }
   
   post {
