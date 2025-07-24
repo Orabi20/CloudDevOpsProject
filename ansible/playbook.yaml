@@ -27,6 +27,7 @@
   hosts: tag_jenkins_slave
   become: true
   roles:
+    - trivy
     - aws_cli
     - common
     - git

@@ -1,0 +1,32 @@
+---
+- name: Install required dependencies
+  package:
+    name:
+      - wget
+      - rpm
+    state: present
+
+- name: Add Trivy GPG key
+  rpm_key:
+    key: https://aquasecurity.github.io/trivy-repo/rpm/public.key
+    state: present
+
+- name: Add Trivy repo
+  get_url:
+    url: https://aquasecurity.github.io/trivy-repo/rpm/releases.repo
+    dest: /etc/yum.repos.d/trivy.repo
+    mode: '0644'
+
+- name: Install Trivy
+  yum:
+    name: trivy
+    state: present
+
+- name: Check Trivy version
+  command: trivy --version
+  register: trivy_version
+  changed_when: false
+
+# - name: Display Trivy version
+#   debug:
+#     var: trivy_version.stdout
