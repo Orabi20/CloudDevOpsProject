@@ -1,0 +1,26 @@
+---
+- name: Enable docker through amazon-linux-extras
+  become: true
+  command: amazon-linux-extras enable docker
+  args:
+    creates: /etc/yum.repos.d/amzn2-extras.repo
+
+- name: Install docker
+  become: true
+  yum:
+    name: docker
+    state: present
+
+- name: Start and enable docker
+  become: true
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Add ec2-user to docker group
+  become: true
+  user:
+    name: ec2-user
+    groups: docker
+    append: yes

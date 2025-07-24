@@ -1,0 +1,50 @@
+---
+- name: Copy SSH keys to Jenkins Master
+  hosts: tag_jenkins_master
+  become: yes
+  vars:
+    ssh_key_local_path: ~/.ssh/eks-keypair
+    ssh_key_dest: /home/ec2-user/.ssh/jenkins_agent_key
+    ssh_user: ec2-user
+
+  tasks:
+    - name: Ensure .ssh directory exists on master
+      file:
+        path: /home/{{ ssh_user }}/.ssh
+        state: directory
+        owner: "{{ ssh_user }}"
+        group: "{{ ssh_user }}"
+        mode: '0700'
+
+    - name: Copy private key to master
+      copy:
+        src: "{{ ssh_key_local_path }}"
+        dest: "{{ ssh_key_dest }}"
+        owner: "{{ ssh_user }}"
+        group: "{{ ssh_user }}"
+        mode: '0600'
+
+    - name: Copy public key to master
+      copy:
+        src: "{{ ssh_key_local_path }}.pub"
+        dest: "{{ ssh_key_dest }}.pub"
+        owner: "{{ ssh_user }}"
+        group: "{{ ssh_user }}"
+        mode: '0644'
+
+    - name: Send public key from master to slave
+      delegate_to: "{{ inventory_hostname }}"
+      become_user: "{{ ssh_user }}"
+      shell: |
+        ssh -o StrictHostKeyChecking=no -i {{ ssh_key_dest }} {{ ssh_user }}@{{ groups['tag_jenkins_slave'][0] }} \
+        "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo '{{ lookup('file', ssh_key_local_path + '.pub') }}' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+
+- name: Create Jenkins home on Slave
+  hosts: tag_jenkins_slave
+  become: yes
+  tasks:
+    - name: Create /home/jenkins_home directory
+      file:
+        path: /home/jenkins_home
+        state: directory
+        mode: '0777'

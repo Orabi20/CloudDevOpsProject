@@ -1,0 +1,42 @@
+# plugin: amazon.aws.aws_ec2
+# regions:
+#   - us-east-1
+# filters:
+#   "tag:Name": "jenkins"
+# keyed_groups:
+#   - key: tags.Name
+#     prefix: tag
+# hostnames:
+#   - public-ip-address
+# compose:
+#   ansible_host: public_dns_name
+#   ansible_user: ec2-user
+
+# vars:
+#   ansible_ssh_private_key_file: /home/orabi/.ssh/eks-keypair
+
+plugin: amazon.aws.aws_ec2
+
+regions:
+  - us-east-1
+
+filters:
+  tag:Name:
+    - jenkins-master
+    - jenkins-slave
+
+
+keyed_groups:
+  - key: tags.Name
+    prefix: tag
+
+hostnames:
+  - ip-address
+
+# compose:
+#   ansible_host: public_dns_name
+#   ansible_user: ec2-user
+
+vars:
+  ansible_ssh_private_key_file: /home/orabi/.ssh/eks-keypair
+

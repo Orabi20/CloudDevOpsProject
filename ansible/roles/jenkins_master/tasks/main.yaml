@@ -1,0 +1,61 @@
+---
+- name: Install Java 17 and required packages
+  yum:
+    name:
+      - java-17-amazon-corretto
+      - wget
+    state: present
+
+- name: Download Jenkins repository
+  get_url:
+    url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+    mode: '0644'
+
+- name: Import Jenkins GPG key
+  rpm_key:
+    state: present
+    key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+- name: Install Jenkins
+  yum:
+    name: jenkins
+    state: latest
+
+- name: Ensure Jenkins user owns the Jenkins home directory
+  file:
+    path: /var/lib/jenkins
+    owner: jenkins
+    group: jenkins
+    recurse: yes
+
+- name: Create Jenkins systemd service file
+  copy:
+    dest: /etc/systemd/system/jenkins.service
+    content: |
+      [Unit]
+      Description=Jenkins Continuous Integration Server
+      After=network.target
+
+      [Service]
+      User=jenkins
+      Group=jenkins
+      Environment="JENKINS_HOME=/var/lib/jenkins"
+      WorkingDirectory=/var/lib/jenkins
+      ExecStart=/usr/bin/java -jar /usr/share/java/jenkins.war --httpPort=8080 --webroot=/var/cache/jenkins/war
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload systemd daemon
+  command: systemctl daemon-reload
+
+- name: Enable and start Jenkins service
+  systemd:
+    name: jenkins
+    enabled: yes
+    state: started
