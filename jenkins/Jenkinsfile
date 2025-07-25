@@ -63,9 +63,7 @@ pipeline {
     stage('Scan Docker Image Using Trivy') {
       steps {
           sh '''
-          trivy image --format json --output trivy-report.json your-image-name
-          # Example:
-          trivy image --format json --output trivy-report.json ahmedorabi/demo-app
+          trivy image --format json --output trivy-report.json $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG 
           '''
       }
     }
