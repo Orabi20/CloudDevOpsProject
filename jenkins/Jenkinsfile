@@ -6,6 +6,7 @@ pipeline {
     ECR_REPO = 'nodejs_app'
     ECR_REGISTRY = '289222951012.dkr.ecr.us-east-1.amazonaws.com'
     IMAGE_TAG = "${BUILD_NUMBER}"
+    GIT_CREDENTIALS_ID = 'github'
     CLUSTER_NAME = 'my-eks-cluster'
     NAMESPACE = 'ivolve'
     // SERVICE_NAME = 'hello-eyego-service'
@@ -80,7 +81,7 @@ pipeline {
     stage('Clone ArgoCD Manifests Repo') {
             steps {
                  dir('argocd_k8s_manifest/nodejs_app_deployment') {
-                    git branch: 'master',
+                    git branch: 'main',
                         credentialsId: GIT_CREDENTIALS_ID,
                         url: 'https://github.com/Orabi20/CloudDevOpsProject'
                  }
