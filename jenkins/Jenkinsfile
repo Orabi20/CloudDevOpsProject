@@ -80,7 +80,7 @@ pipeline {
 
     stage('Clone ArgoCD Manifests Repo') {
             steps {
-                 dir('argocd_k8s_manifest/nodejs_app_deployment') {
+                 dir('.') {
                     git branch: 'main',
                         credentialsId: GIT_CREDENTIALS_ID,
                         url: 'https://github.com/Orabi20/CloudDevOpsProject'
