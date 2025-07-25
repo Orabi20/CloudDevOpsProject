@@ -20,7 +20,7 @@ spec:
           effect: "NoSchedule"
       containers:
         - name: nodejs-container
-          image: orabi20/kubernetes-app:v4
+          image: 289222951012.dkr.ecr.us-east-1.amazonaws.com/nodejs_app:12
           ports:
             - containerPort: 3000
           env:
