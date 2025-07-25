@@ -71,7 +71,7 @@ pipeline {
     stage('Cleanup Local Images') {
             steps {
                 sh """
-                    docker rmi $ECR_REPO:$IMAGE || true
+                    docker rmi $ECR_REPO:$IMAGE_TAG || true
                     docker rmi $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG || true
                 """
             }
