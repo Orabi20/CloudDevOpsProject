@@ -9,9 +9,7 @@ pipeline {
     GIT_CREDENTIALS_ID = 'github'
     CLUSTER_NAME = 'my-eks-cluster'
     NAMESPACE = 'ivolve'
-    // SERVICE_NAME = 'hello-eyego-service'
-    DEPLOYMENT_FILE = 'deployment.yml'
-    // SERVICE_FILE = 'service.yaml'
+    DEPLOYMENT_FILE = 'argocd_k8s_manifest/nodejs_app_deployment/deployment.yml'
   }
 
   stages {
@@ -109,24 +107,6 @@ pipeline {
                 }
             }
         }
-    // stage('Update K8s Deployment') {
-    //   steps {
-    //      dir('k8s') {
-    //         sh '''
-    //           aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
-              
-    //           kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
-
-    //           sed -i "s|image:.*|image: $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG|" $DEPLOYMENT_FILE
-              
-    //           kubectl apply -n $NAMESPACE -f $DEPLOYMENT_FILE
-    //           kubectl apply -n $NAMESPACE -f $SERVICE_FILE
-
-    //           kubectl get svc -n $NAMESPACE $SERVICE_NAME -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-    //         '''
-    //     }
-    //   }
-    // }
   }
   
   post {
