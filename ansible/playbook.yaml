@@ -12,16 +12,16 @@
 #     - jenkins
 
 ---
-- name: Setup Jenkins Master
-  hosts: tag_jenkins_master
-  become: true
-  roles:
-    - aws_cli
-    - common
-    - git
-    - docker
-    - java
-    - jenkins_master
+# - name: Setup Jenkins Master
+#   hosts: tag_jenkins_master
+#   become: true
+#   roles:
+#     - aws_cli
+#     - common
+#     - git
+#     - docker
+#     - java
+#     - jenkins_master
 
 - name: Setup Jenkins Slave
   hosts: tag_jenkins_slave

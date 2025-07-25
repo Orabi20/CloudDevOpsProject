@@ -1,32 +1,67 @@
----
-- name: Install required dependencies
-  package:
-    name:
-      - wget
-      - rpm
-    state: present
+# ---
+# - name: Install required dependencies
+#   package:
+#     name:
+#       - wget
+#       - rpm
+#     state: present
 
-- name: Add Trivy GPG key
-  rpm_key:
-    key: https://aquasecurity.github.io/trivy-repo/rpm/public.key
-    state: present
+# - name: Add Trivy GPG key
+#   rpm_key:
+#     key: https://aquasecurity.github.io/trivy-repo/rpm/public.key
+#     state: present
 
-- name: Add Trivy repo
-  get_url:
-    url: https://aquasecurity.github.io/trivy-repo/rpm/releases.repo
-    dest: /etc/yum.repos.d/trivy.repo
-    mode: '0644'
+# - name: Add Trivy repo
+#   get_url:
+#     url: https://aquasecurity.github.io/trivy-repo/rpm/releases/aqua-trivy.repo
+#     dest: /etc/yum.repos.d/trivy.repo
+#     mode: '0644'
 
-- name: Install Trivy
-  yum:
-    name: trivy
-    state: present
+# - name: Install Trivy
+#   yum:
+#     name: trivy
+#     state: present
 
-- name: Check Trivy version
-  command: trivy --version
-  register: trivy_version
-  changed_when: false
+# - name: Check Trivy version
+#   command: trivy --version
+#   register: trivy_version
+#   changed_when: false
 
 # - name: Display Trivy version
 #   debug:
 #     var: trivy_version.stdout
+
+- name: Set Trivy version
+  set_fact:
+    trivy_version: "0.51.1"
+
+- name: Download Trivy tar.gz
+  get_url:
+    url: "https://github.com/aquasecurity/trivy/releases/download/v{{ trivy_version }}/trivy_{{ trivy_version }}_Linux-64bit.tar.gz"
+    dest: /tmp/trivy.tar.gz
+
+- name: Extract Trivy archive
+  unarchive:
+    src: /tmp/trivy.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Move Trivy binary to /usr/local/bin
+  ansible.builtin.command:
+    cmd: mv /tmp/trivy /usr/local/bin/trivy
+  become: true
+- name: Ensure Trivy is executable
+  become: true
+  file:
+    path: /usr/local/bin/trivy
+    mode: '0755'
+    state: file
+
+
+- name: Verify Trivy installation
+  command: /usr/local/bin/trivy --version
+  register: trivy_version_output
+
+- name: Show Trivy version
+  debug:
+    var: trivy_version_output.stdout
