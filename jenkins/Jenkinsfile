@@ -43,7 +43,14 @@ pipeline {
         }
       }
     }
-
+    stage('Create ECR Repo if Not Exists') {
+      steps {
+       sh '''
+       aws ecr describe-repositories --repository-names $ECR_REPO || \
+       aws ecr create-repository --repository-name $ECR_REPO --region $AWS_REGION
+       '''
+       }
+    }
     stage('Tag & Push Docker Image to ECR') {
       steps {
         sh '''
