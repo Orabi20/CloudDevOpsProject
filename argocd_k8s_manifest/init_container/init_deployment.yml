@@ -10,6 +10,11 @@ spec:
         job: init-mysql
     spec:
       restartPolicy: Never
+      tolerations:
+        - key: "workload"
+          operator: "Equal"
+          value: "database"
+          effect: "NoSchedule"
       containers:
         - name: mysql-init
           image: mysql:5.7
