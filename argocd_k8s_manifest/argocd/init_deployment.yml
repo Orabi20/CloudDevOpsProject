@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-mysql-job
+  namespace: ivolve
+spec:
+  template:
+    metadata:
+      labels:
+        job: init-mysql
+    spec:
+      restartPolicy: Never
+      tolerations:
+        - key: "workload"
+          operator: "Equal"
+          value: "database"
+          effect: "NoSchedule"
+      containers:
+        - name: mysql-init
+          image: mysql:5.7
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: DB_HOST
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: DB_PASSWORD
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "Waiting for MySQL to be ready...";
+              until mysqladmin ping -h $DB_HOST --silent; do
+                sleep 2;
+              done;
+              echo "Creating DB & user...";
+              mysql -h $DB_HOST -u root -p${MYSQL_ROOT_PASSWORD} -e "
+                CREATE DATABASE IF NOT EXISTS ivolve;
+                CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+                GRANT ALL PRIVILEGES ON ivolve.* TO '${DB_USER}'@'%';
+                FLUSH PRIVILEGES;";
+              echo "MySQL init done.";
