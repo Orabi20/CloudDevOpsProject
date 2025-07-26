@@ -59,11 +59,6 @@ spec:
                 FLUSH PRIVILEGES;";
               echo "Init container completed."
 
-      containers:
-        - name: nodejs-container
-          image: orabi20/phpmyadmin:v2
-          ports:
-            - containerPort: 3000
           env:
             - name: DB_HOST
               valueFrom:
