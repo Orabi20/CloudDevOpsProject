@@ -1,0 +1,23 @@
+replicaCount: 1
+
+tolerations:
+  - key: "workload"
+    operator: "Exists"
+
+persistence:
+  enabled: false
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 3000
+
+admin:
+  user: admin
+  password: admin123
+
+securityContext:
+  runAsUser: 472
+  runAsGroup: 472
+  fsGroup: 472
+

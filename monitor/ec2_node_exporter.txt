@@ -1,0 +1,3 @@
+kubectl edit configmap prometheus-server -n monitoring
+
+add prom plugin to jenkins
