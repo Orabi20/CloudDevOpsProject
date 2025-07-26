@@ -61,7 +61,7 @@ spec:
 
       containers:
         - name: nodejs-container
-          image: orabi20/phpmyadmin:v2
+          image: 289222951012.dkr.ecr.us-east-1.amazonaws.com/nodejs_app:5
           ports:
             - containerPort: 3000
           env:
