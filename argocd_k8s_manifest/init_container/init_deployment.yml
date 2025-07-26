@@ -1,48 +1,29 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: nodejs-app
+  name: init-mysql-job
   namespace: ivolve
 spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: nodejs
   template:
     metadata:
       labels:
-        app: nodejs
+        job: init-mysql
     spec:
-      tolerations:
-        - key: "workload"
-          operator: "Equal"
-          value: "app"
-          effect: "NoSchedule"
-
-      initContainers:
-        - name: init-mysql-setup
+      restartPolicy: Never
+      containers:
+        - name: mysql-init
           image: mysql:5.7
-          command: ["sh", "-c"]
-          args:
-            - |
-              echo "Waiting for MySQL to be ready..."
-              until mysqladmin ping -h $DB_HOST --silent; do
-                echo "Waiting for MySQL..."
-                sleep 2
-              done
-              echo "Creating database and user..."
-              mysql -h $DB_HOST -u root -p${MYSQL_ROOT_PASSWORD} -e "
-                CREATE DATABASE IF NOT EXISTS ivolve;
-                CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
-                GRANT ALL PRIVILEGES ON ivolve.* TO '${DB_USER}'@'%';
-                FLUSH PRIVILEGES;";
-              echo "Init container completed."
           env:
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
                   name: mysql-config
                   key: DB_HOST
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
             - name: DB_USER
               valueFrom:
                 configMapKeyRef:
@@ -53,15 +34,17 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: DB_PASSWORD
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: MYSQL_ROOT_PASSWORD
-          volumeMounts:
-            - name: logs-storage
-              mountPath: /usr/src/app/data
-
-      volumes:
-        - name: logs-storage
-          emptyDir: {}
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "Waiting for MySQL to be ready...";
+              until mysqladmin ping -h $DB_HOST --silent; do
+                sleep 2;
+              done;
+              echo "Creating DB & user...";
+              mysql -h $DB_HOST -u root -p${MYSQL_ROOT_PASSWORD} -e "
+                CREATE DATABASE IF NOT EXISTS ivolve;
+                CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+                GRANT ALL PRIVILEGES ON ivolve.* TO '${DB_USER}'@'%';
+                FLUSH PRIVILEGES;";
+              echo "MySQL init done.";
