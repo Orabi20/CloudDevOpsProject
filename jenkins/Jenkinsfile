@@ -96,6 +96,10 @@ pipeline {
                             git stash
                             git pull origin main --rebase
                             git stash pop || true
+                            
+                            echo "PWD: $(pwd)"
+                            ls -l
+
 
                             sed -i 's|image:.*|image: '"$ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG"'|' $DEPLOYMENT_FILE
                             git add $DEPLOYMENT_FILE
