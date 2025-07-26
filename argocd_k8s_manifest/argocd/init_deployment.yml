@@ -59,32 +59,32 @@ spec:
                 FLUSH PRIVILEGES;";
               echo "Init container completed."
 
-      containers:
-        - name: nodejs-container
-          image: orabi20/phpmyadmin:v2
-          ports:
-            - containerPort: 3000
-          env:
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: DB_HOST
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: DB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: DB_PASSWORD
-          volumeMounts:
-            - name: logs-storage
-              mountPath: /usr/src/app/data
+      # containers:
+      #   - name: nodejs-container
+      #     image: orabi20/phpmyadmin:v2
+      #     ports:
+      #       - containerPort: 3000
+      #     env:
+      #       - name: DB_HOST
+      #         valueFrom:
+      #           configMapKeyRef:
+      #             name: mysql-config
+      #             key: DB_HOST
+      #       - name: DB_USER
+      #         valueFrom:
+      #           configMapKeyRef:
+      #             name: mysql-config
+      #             key: DB_USER
+      #       - name: DB_PASSWORD
+      #         valueFrom:
+      #           secretKeyRef:
+      #             name: mysql-secret
+      #             key: DB_PASSWORD
+      #     volumeMounts:
+      #       - name: logs-storage
+      #         mountPath: /usr/src/app/data
 
-      volumes:
-        - name: logs-storage
-          emptyDir: {}
+      # volumes:
+      #   - name: logs-storage
+      #     emptyDir: {}
 
