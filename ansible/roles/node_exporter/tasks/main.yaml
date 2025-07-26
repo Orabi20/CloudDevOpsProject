@@ -1,0 +1,45 @@
+- name: Create node_exporter user
+  shell: useradd -rs /bin/false node_exporter
+  args:
+    creates: /home/node_exporter
+  ignore_errors: true
+
+- name: Download node_exporter tar.gz
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.8.1/node_exporter-1.8.1.linux-amd64.tar.gz
+    dest: /tmp/node_exporter.tar.gz
+
+- name: Extract node_exporter
+  unarchive:
+    src: /tmp/node_exporter.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Move node_exporter binary to /usr/local/bin
+  shell: mv /tmp/node_exporter-1.8.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
+  args:
+    creates: /usr/local/bin/node_exporter
+
+- name: Create systemd service file for node_exporter
+  copy:
+    dest: /etc/systemd/system/node_exporter.service
+    content: |
+      [Unit]
+      Description=Node Exporter
+      After=network.target
+
+      [Service]
+      User=node_exporter
+      ExecStart=/usr/local/bin/node_exporter
+
+      [Install]
+      WantedBy=default.target
+
+- name: Reload systemd daemon
+  shell: systemctl daemon-reexec && systemctl daemon-reload
+
+- name: Start node_exporter service
+  systemd:
+    name: node_exporter
+    state: started
+    enabled: yes
