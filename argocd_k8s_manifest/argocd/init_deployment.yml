@@ -21,7 +21,7 @@ spec:
 
       initContainers:
         - name: init-mysql-setup
-          image: mysql:5.7
+          image: 289222951012.dkr.ecr.us-east-1.amazonaws.com/nodejs_app:2
           env:
             - name: DB_HOST
               valueFrom:
@@ -61,7 +61,7 @@ spec:
 
       containers:
         - name: nodejs-container
-          image: 289222951012.dkr.ecr.us-east-1.amazonaws.com/nodejs_app:5
+          image: 289222951012.dkr.ecr.us-east-1.amazonaws.com/nodejs_app:2
           ports:
             - containerPort: 3000
           env:
