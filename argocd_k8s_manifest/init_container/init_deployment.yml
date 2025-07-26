@@ -22,27 +22,6 @@ spec:
       initContainers:
         - name: init-mysql-setup
           image: mysql:5.7
-          env:
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: DB_HOST 
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: MYSQL_ROOT_PASSWORD
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: DB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: DB_PASSWORD
           command: ["sh", "-c"]
           args:
             - |
@@ -58,7 +37,6 @@ spec:
                 GRANT ALL PRIVILEGES ON ivolve.* TO '${DB_USER}'@'%';
                 FLUSH PRIVILEGES;";
               echo "Init container completed."
-
           env:
             - name: DB_HOST
               valueFrom:
@@ -75,6 +53,11 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: DB_PASSWORD
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
           volumeMounts:
             - name: logs-storage
               mountPath: /usr/src/app/data
@@ -82,4 +65,3 @@ spec:
       volumes:
         - name: logs-storage
           emptyDir: {}
-
