@@ -11,7 +11,8 @@ pipeline {
     GIT_CREDENTIALS_ID = 'github'
     CLUSTER_NAME = 'my-eks-cluster'
     NAMESPACE = 'ivolve'
-    DEPLOYMENT_FILE = 'deployment.yml'
+    DEPLOYMENT_FILE_1 = 'deployment.yml'
+    DEPLOYMENT_FILE_2 = 'init_deployment.yml'
   }
 
   stages {
