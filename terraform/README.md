@@ -1,8 +1,10 @@
 
 # Terraform AWS Infrastructure Deployment
 
-This project uses **Terraform** to provision a complete infrastructure on **AWS**, including networking, EC2 servers, and an EKS (Elastic Kubernetes Service) cluster. The project also uses **remote state management** via `backend.tf`.
+This part of project uses **Terraform** to provision a complete infrastructure on **AWS**, including networking, EC2 servers, and an EKS (Elastic Kubernetes Service) cluster. also uses **remote state management** via `backend.tf`.
 
+<img width="382" height="365" alt="image" src="https://github.com/user-attachments/assets/9783cda2-35ee-49cb-a0ad-03c5ae79512b" />
+                                                          
 ---
 
 ## Directory Structure
@@ -74,6 +76,7 @@ terraform init
 ```bash
 terraform plan
 ```
+<img width="950" height="132" alt="image" src="https://github.com/user-attachments/assets/187c1fd9-b68e-4b70-8db7-c504aa1c5fb8" />
 
 ---
 
@@ -82,6 +85,7 @@ terraform plan
 ```bash
 terraform apply
 ```
+<img width="947" height="30" alt="image" src="https://github.com/user-attachments/assets/a2d80fad-6535-406b-989a-26d5d2ad0e8c" />
 
 ---
 
