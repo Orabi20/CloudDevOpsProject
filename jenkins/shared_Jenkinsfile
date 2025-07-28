@@ -15,12 +15,17 @@ pipeline {
   }
 
   stages {
-    stage('Login to AWS ECR') {
-      steps { LoginToEcr() }
-    }
 
     stage('Build Docker Image') {
       steps { BuildDockerImage() }
+    }
+
+    stage('Scan Docker Image Using Trivy') {
+      steps { ScanDockerImage() }
+    }
+
+    stage('Login to AWS ECR') {
+      steps { LoginToEcr() }
     }
 
     stage('Create ECR Repo if Not Exists') {
@@ -29,10 +34,6 @@ pipeline {
 
     stage('Tag & Push Docker Image to ECR') {
       steps { TagAndPushImage() }
-    }
-
-    stage('Scan Docker Image Using Trivy') {
-      steps { ScanDockerImage() }
     }
 
     stage('Cleanup Local Images') {
