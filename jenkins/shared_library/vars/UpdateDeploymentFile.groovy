@@ -1,5 +1,5 @@
 def call() {
-  dir('argocd_k8s_manifest/argocd') {
+  dir('argocd/k8s') {
     withCredentials([usernamePassword(credentialsId: GIT_CREDENTIALS_ID, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
       sh '''
         git config user.name "jenkins"
