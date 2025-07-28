@@ -1,5 +1,5 @@
 alertmanager:
-  enabled: false
+  enabled: true
   tolerations:
     - key: "workload"
       operator: "Exists"
