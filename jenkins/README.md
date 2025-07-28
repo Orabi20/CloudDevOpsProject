@@ -1,10 +1,14 @@
 # Jenkins CI/CD Pipeline with Shared Library
 
-## 📘 Overview
+## Overview
 
-This project implements a Jenkins CI/CD pipeline using a declarative `Jenkinsfile` and a custom Jenkins Shared Library. It automates Docker image building, vulnerability scanning, pushing to AWS ECR, and updating deployment manifests for Kubernetes via ArgoCD.
+This part of project implements a Jenkins CI/CD pipeline using a declarative `Jenkinsfile` and a custom Jenkins Shared Library. It automates Docker image building, vulnerability scanning, pushing to AWS ECR, and updating deployment manifests for Kubernetes via ArgoCD.
 
-## 🗂 Folder Structure
+<img width="763" height="71" alt="image" src="https://github.com/user-attachments/assets/84d8a00d-ad6c-4070-9a01-4b1c94f34566" />
+
+---
+
+## Folder Structure
 
 ```
 jenkins/
@@ -12,16 +16,17 @@ jenkins/
 └── shared_library/
     └── vars/
         ├── BuildDockerImage.groovy
+        ├── ScanDockerImage.groovy
+        ├── LoginToEcr.groovy
+        ├── CreateEcrRepo.groovy
+        ├── TagAndPushImage.groovy
         ├── CleanupLocalImages.groovy
         ├── CloneArgoRepo.groovy
-        ├── CreateEcrRepo.groovy
-        ├── LoginToEcr.groovy
-        ├── ScanDockerImage.groovy
-        ├── TagAndPushImage.groovy
         └── UpdateDeploymentFile.groovy
 ```
+---
 
-## ✅ Pre-requisites
+## Pre-requisites
 
 * Jenkins installed with:
 
@@ -29,23 +34,69 @@ jenkins/
   * Docker installed on Jenkins agent
   * AWS credentials configured
   * Git and GitHub access
-* AWS CLI configured with access to ECR
-* ArgoCD setup and integrated with Kubernetes
+  * AWS CLI configured with access to ECR
+---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1. Configure Shared Library in Jenkins
 
 * Go to **Manage Jenkins > Configure System > Global Pipeline Libraries**
 * Add:
 
-  * Name: `shared_library`
-  * Default Version: `master` (or branch name)
+  * Name: `cloud_devops_project`
+  * Default Version: `main` (or branch name)
   * Retrieval method: Modern SCM
   * SCM: Git
   * Project Repository: (your GitHub repo URL with shared library)
 
-### 2. Create a Jenkins Pipeline Job
+## 2. Jenkins Credentials Configuration
+
+Go to **Manage Jenkins > Credentials > System > Global credentials** then Click **Add Credentials**
+Ensure the following credentials are created in Jenkins:
+
+a. **AWS Credentials (Access Key + Secret Key + Session Token)**
+
+   * Kind: `Secret text`
+   * ID: `aws-access-key` , `aws-secret-key` , `aws-session-token`
+
+b. **GitHub Credentials (for private repo access if needed)**
+
+   * Kind: `Username with password`
+   * ID: `github`
+
+c. **SSH Credentials (to connect with jenkins-slave)**
+
+   * Kind: `SSH Username with private key`
+   * ID: `agent`
+
+> Use these credential IDs in your Jenkinsfile and shared library scripts to access secure resources.
+
+## 3. Jenkins Agent Setup
+
+To execute CI/CD pipeline stages, Jenkins must have at least one functional build agent (node). Here's how to configure it:
+
+### a. Create a New Node in Jenkins
+
+* Go to **Manage Jenkins > Manage Nodes and Clouds > New Node**
+* Name: `agent-vm`
+* Type: Permanent Agent
+* Configure:
+
+  * # of executors: 1 or more
+  * Remote root directory: `/home/jenkins_home`
+  * Launch method: Launch agent via SSH
+  * Host: `<IP or hostname>`
+  * Credentials: Add SSH private key credentials for login
+
+### b. Test the Connection
+
+* Click **Save** and then test the connection to ensure the agent is online.
+  
+---
+
+
+### 4. Create a Jenkins Pipeline Job
 
 * New Item → Pipeline → Configure
 * Definition: Pipeline script from SCM
@@ -58,10 +109,14 @@ jenkins/
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = "your-app"
-        IMAGE_TAG = "latest"
-        AWS_ACCOUNT_ID = credentials('aws-account-id')
-        REGION = 'us-east-1'
+       AWS_REGION = 'us-east-1'
+       ECR_REPO = 'nodejs_app'
+       ECR_REGISTRY = '289222951012.dkr.ecr.us-east-1.amazonaws.com'
+       IMAGE_TAG = "${BUILD_NUMBER}"
+       GIT_CREDENTIALS_ID = 'github'
+       CLUSTER_NAME = 'my-eks-cluster'
+       NAMESPACE = 'ivolve'
+       DEPLOYMENT_FILE = 'deployment.yml'
     }
     stages {
         stage('Build Docker Image') {
@@ -99,6 +154,13 @@ pipeline {
                 }
             }
         }
+        stage('Cleanup Images') {
+            steps {
+                script {
+                    CleanupLocalImages()
+                }
+            }
+        }
         stage('Clone Argo Repo') {
             steps {
                 script {
@@ -110,13 +172,6 @@ pipeline {
             steps {
                 script {
                     UpdateDeploymentFile()
-                }
-            }
-        }
-        stage('Cleanup Images') {
-            steps {
-                script {
-                    CleanupLocalImages()
                 }
             }
         }
