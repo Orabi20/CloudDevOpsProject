@@ -3,7 +3,7 @@
 
 This part of project uses **Terraform** to provision a complete infrastructure on **AWS**, including networking, EC2 servers, and an EKS (Elastic Kubernetes Service) cluster. also uses **remote state management** via `backend.tf`.
 
-                                                 <img width="382" height="365" alt="image" src="https://github.com/user-attachments/assets/9783cda2-35ee-49cb-a0ad-03c5ae79512b" />
+<img width="382" height="365" alt="image" src="https://github.com/user-attachments/assets/9783cda2-35ee-49cb-a0ad-03c5ae79512b" />
                                                           
 ---
 
