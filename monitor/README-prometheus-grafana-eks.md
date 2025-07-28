@@ -1,4 +1,3 @@
-<img width="947" height="424" alt="image" src="https://github.com/user-attachments/assets/fb51155d-67a9-46f2-a68f-eb75594d2164" />
 # 📊 Monitoring EKS with Prometheus & Grafana
 
 This guide explains how to install and configure Prometheus and Grafana on your Amazon EKS cluster using Helm charts.
