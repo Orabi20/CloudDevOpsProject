@@ -55,9 +55,6 @@ kubectl get svc argocd-server -n argocd
 
 You’ll get an EXTERNAL-IP like:
 
-```
-argocd-server   LoadBalancer   <internal-ip>   a12b34c56d7e8f9g.elb.amazonaws.com   80:XXXXX/TCP,443:YYYYY/TCP
-```
 <img width="947" height="40" alt="image" src="https://github.com/user-attachments/assets/6c2bed0f-d6e9-4654-9a34-13ce15cc73bb" />
 
 ---
