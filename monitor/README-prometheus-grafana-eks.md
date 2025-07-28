@@ -1,4 +1,4 @@
-
+<img width="947" height="424" alt="image" src="https://github.com/user-attachments/assets/fb51155d-67a9-46f2-a68f-eb75594d2164" />
 # 📊 Monitoring EKS with Prometheus & Grafana
 
 This guide explains how to install and configure Prometheus and Grafana on your Amazon EKS cluster using Helm charts.
@@ -93,7 +93,7 @@ server:
     fsGroup: 65534
 ```
 
-Save as `values.yaml`.
+Save as `prometheus.yaml`.
 
 ---
 
@@ -109,6 +109,9 @@ helm install prometheus prometheus-community/kube-prometheus-stack   -n monitori
 - node-exporter
 - kube-state-metrics
 - Pushgateway
+
+<img width="958" height="448" alt="image" src="https://github.com/user-attachments/assets/1baebfa3-8caf-4ae9-911c-43474adbf910" />
+
 
 ---
 
@@ -157,10 +160,11 @@ helm install grafana grafana/grafana -n monitoring -f grafana-values.yaml
 ```bash
 kubectl get svc -n monitoring
 ```
+<img width="828" height="99" alt="image" src="https://github.com/user-attachments/assets/1936e2b0-48ed-4929-a97b-7da68031c4ca" />
 
 Look for `grafana` service with `EXTERNAL-IP`.
 
-Open in browser: `http://<EXTERNAL-IP>:3000`
+
 
 Default credentials:
 - **User:** `admin`
@@ -169,6 +173,8 @@ Default credentials:
   ```bash
   kubectl get secret --namespace monitoring prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
   ```
+
+<img width="947" height="424" alt="image" src="https://github.com/user-attachments/assets/6acb617e-a01f-49de-94a6-950866e54e2d" />
 
 ---
 
