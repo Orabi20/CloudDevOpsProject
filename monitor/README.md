@@ -109,6 +109,29 @@ helm install prometheus prometheus-community/kube-prometheus-stack   -n monitori
 - kube-state-metrics
 - Pushgateway
 
+### Add EC2 targets to Prometheus config
+
+Update your Prometheus `ScrapeConfigs` section:
+
+```sh
+kubectl edit configmap prometheus-server -n monitoring
+```
+```yaml
+  scrape_configs:
+
+    - job_name: 'jenkins-master-node'
+      static_configs:
+      - targets: ['3.221.163.197:9100']
+
+    - job_name: 'jenkins-slave-node'
+      static_configs:
+      - targets: ['35.171.161.72:9100']
+
+    - job_name: 'jenkins'
+      metrics_path: '/prometheus'
+      static_configs:
+      - targets: ['3.221.163.197:8080']
+```
 <img width="958" height="448" alt="image" src="https://github.com/user-attachments/assets/1baebfa3-8caf-4ae9-911c-43474adbf910" />
 
 
