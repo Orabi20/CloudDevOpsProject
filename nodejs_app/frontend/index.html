@@ -14,12 +14,52 @@
 
     header {
       background-color: white;
-      text-align: center;
       padding: 30px 10px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .profile-top-left {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      text-align: left;
+    }
+
+    .profile-top-left img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      vertical-align: middle;
+    }
+
+    .profile-top-left .info {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+
+    .profile-top-left .info h2 {
+      margin: 0;
+      font-size: 16px;
+      color: #007acc;
+    }
+
+    .profile-top-left .info a {
+      display: block;
+      font-size: 12px;
+      color: #007acc;
+      text-decoration: none;
+    }
+
+    .profile-top-left .info a:hover {
+      text-decoration: underline;
     }
 
     header img {
+      display: block;
+      margin: 0 auto;
       max-width: 220px;
       height: auto;
     }
@@ -75,6 +115,17 @@
 </head>
 <body>
   <header>
+    <!-- Profile in Top Left Corner -->
+    <div class="profile-top-left">
+      <img src="assets/my-photo.jpg" alt="Ahmed Hossam Orabi">
+      <div class="info">
+        <h2>Ahmed Orabi</h2>
+        <a href="https://github.com/Orabi20/CloudDevOpsProject" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/ahmed-orabi20/" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+
+    <!-- Centered Logo -->
     <img src="assets/ivolve-logo.png" alt="iVolve Logo" />
   </header>
 
@@ -116,4 +167,3 @@
   </footer>
 </body>
 </html>
-
