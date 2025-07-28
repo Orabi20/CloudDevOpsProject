@@ -188,7 +188,3 @@ Once Grafana is running:
 4. Import dashboard IDs from https://grafana.com/grafana/dashboards
 
 ---
-
-## 🎉 Done!
-
-You now have full monitoring set up on EKS with Prometheus, Grafana, and optional email alerting!
