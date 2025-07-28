@@ -1,27 +1,15 @@
-# ---
-# - name: EC2 Jenkins Provisioning
-#   hosts:
-#     - tag_jenkins_master
-#     - tag_jenkins_slave
-#   become: true
-#   roles:
-#     - common
-#     - git
-#     - docker
-#     - java
-#     - jenkins
-
 ---
-# - name: Setup Jenkins Master
-#   hosts: tag_jenkins_master
-#   become: true
-#   roles:
-#     - aws_cli
-#     - common
-#     - git
-#     - docker
-#     - java
-#     - jenkins_master
+- name: Setup Jenkins Master
+  hosts: tag_jenkins_master
+  become: true
+  roles:
+    - aws_cli
+    - common
+    - git
+    - docker
+    - java
+    - jenkins_master
+    - node_exporter
 
 - name: Setup Jenkins Slave
   hosts: tag_jenkins_slave
@@ -33,3 +21,4 @@
     - git
     - docker
     - java
+    - node_exporter
