@@ -52,6 +52,8 @@ jenkins/
  
   <img width="782" height="252" alt="image" src="https://github.com/user-attachments/assets/acc1151b-7d4a-442d-a073-2ce84b105017" />
 
+---
+
 
 ## 2. Jenkins Credentials Configuration
 
@@ -77,6 +79,8 @@ c. **SSH Credentials (to connect with jenkins-slave)**
 
 
 <img width="945" height="347" alt="image" src="https://github.com/user-attachments/assets/7e4c1e11-3c5d-4f27-9396-546d94273a87" />
+
+---
 
 
 ## 3. Jenkins Agent Setup
