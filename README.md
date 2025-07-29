@@ -141,7 +141,11 @@ The EKS cluster hosts multiple namespaces:
 
   - **Jenkins Pipeline Metrics**
     <img width="944" height="441" alt="mo 7" src="https://github.com/user-attachments/assets/43196573-2f0a-4ed1-851e-3f1cadc6dc90" />
-
+ 
+ 
+ ### AWS Cloud Watch
+ - Monitor Jenkins master node and Jenkins slave node on AWS 
+    <img width="946" height="394" alt="image" src="https://github.com/user-attachments/assets/8e93c6a8-1884-4d9b-80fb-68a8a730a67a" />
 
 ---
 ## 🌍 Website Access After Deployment
