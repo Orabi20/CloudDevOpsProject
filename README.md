@@ -124,21 +124,24 @@ The EKS cluster hosts multiple namespaces:
 - Deployed in `monitoring` namespace
 - Scrapes metrics from nodes, pods, and Jenkins
 
+  
+<img width="944" height="451" alt="mo 4" src="https://github.com/user-attachments/assets/b966d6d8-5354-4006-9fc2-ec1f706cce15" />
+
+
 ### Grafana
 - Connected to Prometheus data source
 - Dashboards included:
   - **Node Exporter Dashboard**
+    <img width="945" height="440" alt="mo 5" src="https://github.com/user-attachments/assets/8a337fed-95c8-430a-840b-a38439898e14" />
+
+    
   - **EKS Cluster Overview**
+    <img width="949" height="419" alt="mo 6" src="https://github.com/user-attachments/assets/f7516488-b421-4c1e-a0be-e7295729f3d7" />
+
+
   - **Jenkins Pipeline Metrics**
+    <img width="944" height="441" alt="mo 7" src="https://github.com/user-attachments/assets/43196573-2f0a-4ed1-851e-3f1cadc6dc90" />
 
-
-<img width="944" height="451" alt="mo 4" src="https://github.com/user-attachments/assets/b966d6d8-5354-4006-9fc2-ec1f706cce15" />
-
-<img width="945" height="440" alt="mo 5" src="https://github.com/user-attachments/assets/8a337fed-95c8-430a-840b-a38439898e14" />
-
-<img width="949" height="419" alt="mo 6" src="https://github.com/user-attachments/assets/f7516488-b421-4c1e-a0be-e7295729f3d7" />
-
-<img width="944" height="441" alt="mo 7" src="https://github.com/user-attachments/assets/43196573-2f0a-4ed1-851e-3f1cadc6dc90" />
 
 ---
 ## 🌍 Website Access After Deployment
