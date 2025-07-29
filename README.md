@@ -89,6 +89,8 @@ ansible-playbook -i inventory/aws_ec2.yml playbooks/setup-jenkins.yml
 3. **ArgoCD detects changes and syncs to the EKS cluster.**
 4. **Application is deployed and running in EKS.**
 
+<img width="934" height="234" alt="image" src="https://github.com/user-attachments/assets/6cee12b4-3249-4dd9-aef6-575018edf7d3" />
+
 ---
 
 ## ☸️ Kubernetes Cluster Details
