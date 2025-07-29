@@ -6,7 +6,9 @@
 This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenkins**, **ArgoCD**, **Ansible**, **Docker**, and **Kubernetes (EKS)**. It enables automatic provisioning, secure CI/CD, GitOps, and monitoring using modern DevOps tools on AWS infrastructure.
 
 
-<img width="799" height="392" alt="image" src="https://github.com/user-attachments/assets/a9780051-1a5c-4344-a228-fb0088b82137" />
+![clouddevopsproject_pages-to-jpg-0001](https://github.com/user-attachments/assets/502d8886-16d4-4132-aebe-5eb209d07955)
+
+
 
 
 ## 📁 Repository Structure
