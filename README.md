@@ -5,7 +5,9 @@
 
 This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenkins**, **ArgoCD**, **Ansible**, **Docker**, and **Kubernetes (EKS)**. It enables automatic provisioning, secure CI/CD, GitOps, and monitoring using modern DevOps tools on AWS infrastructure.
 
-## 🧱 Architecture Summary
+
+<img width="799" height="392" alt="image" src="https://github.com/user-attachments/assets/a9780051-1a5c-4344-a228-fb0088b82137" />
+
 
 ## 📁 Repository Structure
 
@@ -18,6 +20,8 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 ├── monitoring/
 └── README.md
 ```
+---
+## 🧱 Architecture Summary
 
 - **Provisioning:** Terraform creates EKS, VPC, IAM, S3, and DynamoDB.
 - **CI/CD:** Jenkins automates builds, tests, and deployment.
@@ -26,7 +30,7 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 - **Monitoring:** Prometheus + Grafana monitor the entire setup.
 - **Security:** Trivy scans images for vulnerabilities.
 - **Automation:** Ansible provisions Jenkins and dependencies.
-
+---
 ## 🔧 Tools and Technologies
 
 | Tool        | Purpose                                 |
@@ -43,7 +47,7 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 | GitHub      | Code + Manifest storage                 |
 
 
-
+---
 ## 🌐 1. AWS Infrastructure (via Terraform)
 
 - **EKS Cluster**
@@ -52,6 +56,7 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 - **S3 for remote state backend**
 - **DynamoDB for state locking**
 
+---
 ## 📜 Ansible Setup
 
 Ansible is used to provision Jenkins:
@@ -69,6 +74,7 @@ Run:
 ```bash
 ansible-playbook -i inventory/aws_ec2.yml playbooks/setup-jenkins.yml
 ```
+---
 
 ## 🚀 CI/CD Pipeline Flow
 
@@ -82,7 +88,7 @@ ansible-playbook -i inventory/aws_ec2.yml playbooks/setup-jenkins.yml
 3. **ArgoCD detects changes and syncs to the EKS cluster.**
 4. **Application is deployed and running in EKS.**
 
-
+---
 
 ## ☸️ Kubernetes Cluster Details
 
@@ -104,6 +110,7 @@ The EKS cluster hosts multiple namespaces:
 - **Secrets & ConfigMaps:** Secure credentials and app configs
 - **Ingress:** Optional for external access
 
+---
 ## 📊 Monitoring and Dashboards
 
 ### Prometheus
@@ -124,7 +131,7 @@ http://<grafana-lb-dns>:3000
 Username: admin
 Password: admin (or configured secret)
 ```
-
+---
 ## 🌍 Website Access After Deployment
 
 Once the app is deployed via ArgoCD, access it using the external Load Balancer DNS:
@@ -148,17 +155,4 @@ http://<your-custom-domain>
 Ensure DNS and security group rules allow HTTP/HTTPS traffic.
 
 
-
-
-
-## ✅ Prerequisites
-
-- AWS CLI configured
-- `kubectl`, `eksctl`, `helm`
-- Terraform installed
-- Docker engine
-- Ansible with `boto3`, `botocore`
-
-## 📮 Contact
-
-Raise issues via GitHub or contact the maintainer for queries.
+<img width="959" height="438" alt="image" src="https://github.com/user-attachments/assets/82fa0ad1-3752-487f-945f-ec1703d7ccee" />
