@@ -24,7 +24,7 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 ---
 ## 🧱 Architecture Summary
 
-- **Provisioning:** Terraform creates EKS, VPC, IAM, S3, and DynamoDB.
+- **Provisioning:** Terraform creates EKS, VPC, IAM, EC2, S3, and DynamoDB.
 - **CI/CD:** Jenkins automates builds, tests, and deployment.
 - **Containerization:** Docker used to build application images.
 - **GitOps:** ArgoCD pulls updated manifests and syncs to EKS.
@@ -53,6 +53,7 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 
 - **EKS Cluster**
 - **VPC with Public Subnets**
+- **2 EC2 for jenkins master node and slave node**
 - **IAM roles for nodes and Jenkins**
 - **S3 for remote state backend**
 - **DynamoDB for state locking**
@@ -67,13 +68,10 @@ Ansible is used to provision Jenkins:
   - Jenkins master setup
   - Jenkins slave agents
   - Docker, Java, and Trivy install
-- **Playbooks**:
-  - `setup-jenkins.yml`
-  - `install-dependencies.yml`
 
 Run:
 ```bash
-ansible-playbook -i inventory/aws_ec2.yml playbooks/setup-jenkins.yml
+ansible-playbook -i aws_ec2.yaml playbooks.yaml
 ```
 ---
 
@@ -81,11 +79,13 @@ ansible-playbook -i inventory/aws_ec2.yml playbooks/setup-jenkins.yml
 
 1. **Developer pushes code to GitHub.**
 2. Jenkins:
-   - Pulls project repo and shared libraries
-   - Logs in to AWS ECR
-   - Builds and pushes Docker image
-   - Runs Trivy vulnerability scan
-   - Updates K8s deployment files in ArgoCD repo
+   - Pulls project repo and shared libraries.
+   - Logs in to AWS ECR.
+   - Builds Docker image.
+   - Runs Trivy vulnerability scan.
+   - Pushes Docker image.
+   - Delete local Docker image.
+   - Updates K8s deployment files in ArgoCD repo.
 3. **ArgoCD detects changes and syncs to the EKS cluster.**
 4. **Application is deployed and running in EKS.**
 
@@ -123,7 +123,6 @@ The EKS cluster hosts multiple namespaces:
 ### Prometheus
 - Deployed in `monitoring` namespace
 - Scrapes metrics from nodes, pods, and Jenkins
-- Uses `node-exporter` and `kube-state-metrics`
 
 ### Grafana
 - Connected to Prometheus data source
@@ -131,13 +130,6 @@ The EKS cluster hosts multiple namespaces:
   - **Node Exporter Dashboard**
   - **EKS Cluster Overview**
   - **Jenkins Pipeline Metrics**
-
-Access:
-```
-http://<grafana-lb-dns>:3000
-Username: admin
-Password: admin (or configured secret)
-```
 
 
 <img width="944" height="451" alt="mo 4" src="https://github.com/user-attachments/assets/b966d6d8-5354-4006-9fc2-ec1f706cce15" />
@@ -162,14 +154,5 @@ Look for the service with type `LoadBalancer`. You’ll see an external DNS like
 ```
 http://<your-app-lb>.amazonaws.com
 ```
-
-If using Ingress, replace with:
-
-```
-http://<your-custom-domain>
-```
-
-Ensure DNS and security group rules allow HTTP/HTTPS traffic.
-
 
 <img width="959" height="438" alt="image" src="https://github.com/user-attachments/assets/82fa0ad1-3752-487f-945f-ec1703d7ccee" />
