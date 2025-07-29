@@ -110,6 +110,10 @@ The EKS cluster hosts multiple namespaces:
 - **Init Containers:** Used for DB preparation or config jobs
 - **Secrets & ConfigMaps:** Secure credentials and app configs
 - **Ingress:** Optional for external access
+<img width="752" height="323" alt="ar 3" src="https://github.com/user-attachments/assets/1d4265a1-4a9b-49e0-9586-1901fde917f8" />
+
+<img width="598" height="147" alt="ar 4" src="https://github.com/user-attachments/assets/be6e5f76-4013-4f0c-a870-1a0ff1efbde3" />
+
 
 ---
 ## 📊 Monitoring and Dashboards
@@ -132,6 +136,16 @@ http://<grafana-lb-dns>:3000
 Username: admin
 Password: admin (or configured secret)
 ```
+
+
+<img width="944" height="451" alt="mo 4" src="https://github.com/user-attachments/assets/b966d6d8-5354-4006-9fc2-ec1f706cce15" />
+
+<img width="945" height="440" alt="mo 5" src="https://github.com/user-attachments/assets/8a337fed-95c8-430a-840b-a38439898e14" />
+
+<img width="949" height="419" alt="mo 6" src="https://github.com/user-attachments/assets/f7516488-b421-4c1e-a0be-e7295729f3d7" />
+
+<img width="944" height="441" alt="mo 7" src="https://github.com/user-attachments/assets/43196573-2f0a-4ed1-851e-3f1cadc6dc90" />
+
 ---
 ## 🌍 Website Access After Deployment
 
