@@ -2,6 +2,8 @@
 
 This guide explains how to install and configure Prometheus and Grafana on your Amazon EKS cluster using Helm charts.
 
+<img width="717" height="310" alt="image" src="https://github.com/user-attachments/assets/0ceeab9d-359c-40d8-86bb-79d4771975f5" />
+
 ---
 
 ##  Prerequisites
