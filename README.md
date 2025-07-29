@@ -7,6 +7,18 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 
 ## 🧱 Architecture Summary
 
+## 📁 Repository Structure
+
+```
+.
+├── terraform/
+├── ansible/
+├── jenkins/
+├── manifests/
+├── monitoring/
+└── README.md
+```
+
 - **Provisioning:** Terraform creates EKS, VPC, IAM, S3, and DynamoDB.
 - **CI/CD:** Jenkins automates builds, tests, and deployment.
 - **Containerization:** Docker used to build application images.
@@ -30,6 +42,34 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 | Grafana     | Metrics visualization                   |
 | GitHub      | Code + Manifest storage                 |
 
+
+
+## 🌐 1. AWS Infrastructure (via Terraform)
+
+- **EKS Cluster**
+- **VPC with Public Subnets**
+- **IAM roles for nodes and Jenkins**
+- **S3 for remote state backend**
+- **DynamoDB for state locking**
+
+## 📜 Ansible Setup
+
+Ansible is used to provision Jenkins:
+
+- **Dynamic Inventory**: Auto-detect EC2 instances
+- **Roles**:
+  - Jenkins master setup
+  - Jenkins slave agents
+  - Docker, Java, and Trivy install
+- **Playbooks**:
+  - `setup-jenkins.yml`
+  - `install-dependencies.yml`
+
+Run:
+```bash
+ansible-playbook -i inventory/aws_ec2.yml playbooks/setup-jenkins.yml
+```
+
 ## 🚀 CI/CD Pipeline Flow
 
 1. **Developer pushes code to GitHub.**
@@ -42,13 +82,7 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 3. **ArgoCD detects changes and syncs to the EKS cluster.**
 4. **Application is deployed and running in EKS.**
 
-## 🌐 AWS Infrastructure (via Terraform)
 
-- **EKS Cluster**
-- **VPC with Public Subnets**
-- **IAM roles for nodes and Jenkins**
-- **S3 for remote state backend**
-- **DynamoDB for state locking**
 
 ## ☸️ Kubernetes Cluster Details
 
@@ -113,35 +147,9 @@ http://<your-custom-domain>
 
 Ensure DNS and security group rules allow HTTP/HTTPS traffic.
 
-## 📜 Ansible Setup
 
-Ansible is used to provision Jenkins:
 
-- **Dynamic Inventory**: Auto-detect EC2 instances
-- **Roles**:
-  - Jenkins master setup
-  - Jenkins slave agents
-  - Docker, Java, and Trivy install
-- **Playbooks**:
-  - `setup-jenkins.yml`
-  - `install-dependencies.yml`
 
-Run:
-```bash
-ansible-playbook -i inventory/aws_ec2.yml playbooks/setup-jenkins.yml
-```
-
-## 📁 Repository Structure
-
-```
-.
-├── terraform/
-├── ansible/
-├── jenkins/
-├── manifests/
-├── monitoring/
-└── README.md
-```
 
 ## ✅ Prerequisites
 
