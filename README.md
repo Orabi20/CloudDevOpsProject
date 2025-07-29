@@ -16,8 +16,8 @@ This project demonstrates a complete DevOps pipeline using **Terraform**, **Jenk
 ├── terraform/
 ├── ansible/
 ├── jenkins/
-├── manifests/
-├── monitoring/
+├── argocd/
+├── monitor/
 └── README.md
 ```
 ---
