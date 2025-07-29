@@ -67,7 +67,7 @@ Ansible is used to provision Jenkins:
 - **Roles**:
   - Jenkins master setup
   - Jenkins slave agents
-  - Docker, Java, and Trivy install
+  - Docker, Java, aws-cli, git, and Trivy install
 
 Run:
 ```bash
