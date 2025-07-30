@@ -209,6 +209,127 @@ Once Grafana is running:
 1. Log in to Grafana
 2. Go to **Configuration → Data Sources**
 3. Add Prometheus with URL: `http://prometheus-operated.monitoring.svc`
-4. Import dashboard IDs from https://grafana.com/grafana/dashboards
+4. Import dashboard IDs :
+   -  Jenkins Dashboard       : 9964
+   -  EKS Dashboard           : 315
+   -  Node Exporter Dashboard : 1860
 
 ---
+
+## Email Notification Setup in Grafana
+
+1. Create Grafana config (`grafana.ini`) :
+
+```ini
+[smtp]
+enabled = true
+host = smtp.gmail.com:587
+user = your-email@gmail.com
+password = your-app-password
+from_address = your-email@gmail.com
+from_name = Grafana
+skip_verify = true
+```
+
+2. Apply `grafana.ini`:
+
+```bash
+kubectl create configmap grafana --from-file=grafana.ini=grafana.ini -n monitoring
+
+```
+```bash
+kubectl patch deployment grafana -n monitoring --type merge -p '{
+  "spec": {
+    "template": {
+      "spec": {
+        "volumes": [
+          {
+            "name": "grafana-config",
+            "configMap": {
+              "name": "grafana"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "grafana",
+            "image": "grafana/grafana:latest",
+            "volumeMounts": [
+              {
+                "name": "grafana-config",
+                "mountPath": "/etc/grafana/grafana.ini",
+                "subPath": "grafana.ini"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}'
+```
+```bash
+kubectl rollout restart deployment grafana -n monitoring
+```
+
+---
+
+## 📧 5. Add Email Contact Point in Grafana
+
+1. Open Grafana UI → Alerting → **Contact Points**
+2. Click `New contact point`
+3. Name: `email-notify`
+4. Type: `Email`
+5. Enter destination email address
+6. Save
+
+---
+
+## 🧠 6. Create Alert Rule
+
+1. Go to **Alerting → Alert Rules**
+2. Click `New alert rule`
+3. Name: `Jenkins Failure Alert`
+4. Add query:
+
+```promql
+increase(default_jenkins_builds_failed_build_count_total{jenkins_job="Cloud Devops Project"}[5m]) > 0
+```
+
+5. Set condition:
+   - Expression: `IS ABOVE`
+   - Threshold: `0`
+
+6. Add labels and annotations:
+   ```yaml
+   Labels:
+     severity: critical
+
+   Annotations:
+     summary: "Jenkins Job Failed"
+     description: "Job {{ $labels.jenkins_job }} has failed in the last 5 minutes."
+   ```
+
+7. Add to **Group Name** (e.g., `jenkins-alerts`)
+8. Link to **Contact Point**: `email-notify`
+9. Click **Save and Exit**
+
+---
+
+## 7. Test
+
+Trigger a failing Jenkins job and verify:
+
+- Metric updates in Prometheus
+- Alert triggers in Grafana
+- Email notification received
+
+---
+
+## Notes on Gmail SMTP
+
+If using Gmail, create an **App Password**:
+
+1. Enable 2FA on your Google account
+2. Go to: https://myaccount.google.com/apppasswords
+3. Create a password for “Mail” → Use this as your SMTP `password`
