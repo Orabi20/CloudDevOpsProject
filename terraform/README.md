@@ -145,8 +145,8 @@ Defined in `variables.tf` and overridden via `terraform.tfvars`:
 - `aws_key_pair`: Uses your local `~/.ssh/eks-keypair.pub`
 - `aws_security_group`: Opens ports 22 (SSH), 8080 (Jenkins), 9100 (Metrics)
 - `aws_instance`: 
-  - Jenkins master in subnet[0]
-  - Jenkins slave in subnet[1]
+  - Jenkins master
+  - Jenkins slave
 - `data.aws_ami`: Selects latest Amazon Linux 2 AMI
 
 **Outputs**:
@@ -160,7 +160,7 @@ Defined in `variables.tf` and overridden via `terraform.tfvars`:
 To remove all resources:
 
 ```bash
-terraform destroy -auto-approve
+terraform destroy
 ```
 
 ---
