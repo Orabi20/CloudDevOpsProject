@@ -48,12 +48,14 @@ terraform init
 ```bash
 terraform plan
 ```
+<img width="950" height="132" alt="tf 2" src="https://github.com/user-attachments/assets/e8506340-63c8-4fbc-a87d-acc9f252f4a9" />
 
 ### 3. Apply the Infrastructure
 
 ```bash
 terraform apply
 ```
+<img width="947" height="30" alt="tf 1" src="https://github.com/user-attachments/assets/3335ca66-79a8-4884-9c64-2026ca54695e" />
 
 ---
 
