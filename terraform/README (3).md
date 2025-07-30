@@ -67,6 +67,8 @@ After provisioning, Terraform will output:
 - Subnet IDs
 - EKS cluster name & endpoint
 - Jenkins master & slave IPs
+  
+<img width="948" height="308" alt="image" src="https://github.com/user-attachments/assets/61f964ed-daa7-4474-8d1a-33420760ee2c" />
 
 ---
 
