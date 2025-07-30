@@ -1,5 +1,5 @@
 
-# DevOps CI/CD Pipeline on AWS EKS with Terraform, Jenkins, ArgoCD, and Ansible
+# 🚀End-to-End CI/CD & Infrastructure Automation on AWS
 
 ## 📜 Overview
 
@@ -67,9 +67,9 @@ Ansible is used to provision Jenkins:
 
 - **Dynamic Inventory**: Auto-detect EC2 instances
 - **Roles**:
-  - Jenkins master setup
-  - Jenkins slave agents
-  - Docker, Java, aws-cli, git, and Trivy install
+  - Jenkins master node setup.
+  - Jenkins slave node setup.
+  - Docker, Java, aws-cli, git, and Trivy install.
 
 Run:
 ```bash
@@ -85,7 +85,7 @@ ansible-playbook -i aws_ec2.yaml playbooks.yaml
    - Logs in to AWS ECR.
    - Builds Docker image.
    - Runs Trivy vulnerability scan.
-   - Pushes Docker image.
+   - Pushes Docker image to ECR.
    - Delete local Docker image.
    - Updates K8s deployment files in ArgoCD repo.
 3. **ArgoCD detects changes and syncs to the EKS cluster.**
@@ -108,12 +108,12 @@ The EKS cluster hosts multiple namespaces:
 
 ### App Deployment Structure (Namespace: `ivolve`)
 
-- **Frontend & Backend Pods:** Auto-scaled deployments
-- **Services:** ClusterIP and LoadBalancer
-- **DB:** StatefulSet with persistent volumes
-- **Init Containers:** Used for DB preparation or config jobs
-- **Secrets & ConfigMaps:** Secure credentials and app configs
-- **Ingress:** Optional for external access
+- **Frontend & Backend Pods:** Auto-scaled deployments.
+- **Services:** ClusterIP and LoadBalancer.
+- **DB:** StatefulSet with persistent volumes.
+- **Init Containers:** Used for DB preparation.
+- **Secrets & ConfigMaps:** Secure credentials and app configs.
+- **Load Balancer:** external access to EKS.
 <img width="752" height="323" alt="ar 3" src="https://github.com/user-attachments/assets/1d4265a1-4a9b-49e0-9586-1901fde917f8" />
 
 <img width="598" height="147" alt="ar 4" src="https://github.com/user-attachments/assets/be6e5f76-4013-4f0c-a870-1a0ff1efbde3" />
