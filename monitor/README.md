@@ -319,15 +319,15 @@ increase(default_jenkins_builds_failed_build_count_total{jenkins_job="Cloud Devo
 ## Step 9: Test
 
 Trigger a failing Jenkins job and verify:
- <img width="926" height="378" alt="alert 1" src="https://github.com/user-attachments/assets/29843f8b-3c6e-4a35-9d50-43de6e409409" />
+<img width="926" height="378" alt="alert 1" src="https://github.com/user-attachments/assets/29843f8b-3c6e-4a35-9d50-43de6e409409" />
 
  
 - Metric updates in Grafana
-  <img width="937" height="407" alt="alert 2" src="https://github.com/user-attachments/assets/ac68c5a3-b5fd-4d16-8e80-c23f278a6313" />
+<img width="937" height="407" alt="alert 2" src="https://github.com/user-attachments/assets/ac68c5a3-b5fd-4d16-8e80-c23f278a6313" />
 
 
 - Alert triggers in Grafana
- <img width="942" height="398" alt="image" src="https://github.com/user-attachments/assets/5f912910-61f1-4bb0-ac9a-30f33a7e6535" />
+<img width="942" height="398" alt="image" src="https://github.com/user-attachments/assets/5f912910-61f1-4bb0-ac9a-30f33a7e6535" />
 
 
 - Email notification received
