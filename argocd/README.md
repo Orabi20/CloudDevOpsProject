@@ -3,7 +3,8 @@
 
 This guide will walk you through deploying **Argo CD** on an **Amazon EKS cluster**, including steps service exposure.
 
-<img width="1598" height="783" alt="Screenshot 2025-07-29 154525" src="https://github.com/user-attachments/assets/d7c088db-b4e2-47c6-8ba5-138268028a12" />
+![clouddevopsproject_pages-to-jpg-0001](https://github.com/user-attachments/assets/195aa07f-2892-4612-97d3-a1dcff9ae887)
+
 
 ---
 
