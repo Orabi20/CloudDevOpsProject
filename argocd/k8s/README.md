@@ -21,27 +21,22 @@ argocd/
 ## ⚙️ Kubernetes Resources Explained
 
 ### `configmap.yml`
-**Purpose:** 
 - Store non-sensitive MySQL configuration in a ConfigMap
 - Store sensitive MySQL credentials in a Secret using base64 encoding
 
 ### `deployment.yml`
-**Purpose:** Defines the main application deployment using a `Deployment` resource in Kubernetes.
-
-**Key elements:**
-- Number of replicas
-- Docker image details
+Defines the main application deployment using a `Deployment` resource in Kubernetes.
 
 ### `init_deployment.yml`
-**Purpose:** Runs one or more init containers before the main application starts.
+Runs one or more init containers before the main application starts.
 
 ### `msql_statefulset.yml`
-**Purpose:** Deploys MySQL as a StatefulSet.
+Deploys MySQL as a StatefulSet.
 
 ### `mysql_headless_service.yml`
-**Purpose:** Enables direct DNS access to StatefulSet pods.
+Enables direct DNS access to StatefulSet pods.
 
 ### `service.yml`
-**Purpose:** Exposes your application (LoadBalancer).
+Exposes application via (LoadBalancer).
 
 ---
