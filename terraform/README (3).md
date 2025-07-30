@@ -1,14 +1,16 @@
-# 🚀 Terraform EKS Cluster with Jenkins CI Setup
+# Terraform EKS Cluster with Jenkins CI Setup
 
-This project uses **Terraform modules** to deploy:
+This part of project uses **Terraform modules** to deploy:
 
 - An **Amazon EKS cluster**
 - A **custom VPC with public subnets**
 - **Jenkins master/slave EC2 instances** with security groups and SSH access
 
+<img width="382" height="365" alt="tf 3" src="https://github.com/user-attachments/assets/25f56b5f-9f35-4383-8d30-bd4a50157e8f" />
+
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 .
@@ -24,7 +26,7 @@ This project uses **Terraform modules** to deploy:
 
 ---
 
-## 🔧 Prerequisites
+## Prerequisites
 
 - AWS account
 - AWS CLI (`aws configure`)
@@ -33,58 +35,29 @@ This project uses **Terraform modules** to deploy:
 
 ---
 
-## 📦 Setup Instructions
+## Setup Instructions
 
-### 1. Extract or Clone the Repo
-
-```bash
-unzip terraform_eks_project.zip
-cd terraform_eks_project
-```
-
-### 2. Initialize Terraform
+### 1. Initialize Terraform
 
 ```bash
 terraform init
 ```
 
-### 3. Validate the Configuration
-
-```bash
-terraform validate
-```
-
-### 4. Review the Execution Plan
+### 2. Review the Execution Plan
 
 ```bash
 terraform plan
 ```
 
-### 5. Apply the Infrastructure
+### 3. Apply the Infrastructure
 
 ```bash
-terraform apply -auto-approve
+terraform apply
 ```
 
 ---
 
-## 🔐 Access Jenkins
-
-Use your SSH key to connect to the master node:
-
-```bash
-ssh -i ~/.ssh/eks-keypair ec2-user@<jenkins_master_ip>
-```
-
-Jenkins Web UI:
-
-```
-http://<jenkins_master_ip>:8080
-```
-
----
-
-## 📤 Outputs
+## Outputs
 
 After provisioning, Terraform will output:
 
@@ -95,7 +68,7 @@ After provisioning, Terraform will output:
 
 ---
 
-## ⚙️ Variables Overview
+## Variables Overview
 
 Defined in `variables.tf` and overridden via `terraform.tfvars`:
 
@@ -111,7 +84,7 @@ Defined in `variables.tf` and overridden via `terraform.tfvars`:
 
 ---
 
-## 🔁 Workflow Summary
+## Workflow Summary
 
 1. `network/` creates:
    - `VPC`
@@ -127,9 +100,9 @@ Defined in `variables.tf` and overridden via `terraform.tfvars`:
 
 ---
 
-## 🧱 Module-by-Module Code Explanation
+## Module-by-Module Code Explanation
 
-### 📁 `modules/network/` — VPC & Public Subnets
+### `modules/network/` — VPC & Public Subnets
 
 **Resources**:
 - `aws_vpc`: Main VPC
@@ -144,7 +117,7 @@ Defined in `variables.tf` and overridden via `terraform.tfvars`:
 
 ---
 
-### 📁 `modules/eks/` — EKS Cluster + Worker Nodes
+### `modules/eks/` — EKS Cluster + Worker Nodes
 
 **Resources**:
 - `aws_eks_cluster`: EKS control plane
@@ -162,7 +135,7 @@ Defined in `variables.tf` and overridden via `terraform.tfvars`:
 
 ---
 
-### 📁 `modules/server/` — Jenkins EC2 Instances + Security
+### `modules/server/` — Jenkins EC2 Instances + Security
 
 **Resources**:
 - `aws_key_pair`: Uses your local `~/.ssh/eks-keypair.pub`
@@ -178,7 +151,7 @@ Defined in `variables.tf` and overridden via `terraform.tfvars`:
 
 ---
 
-## 🧹 Destroy Infrastructure
+## Destroy Infrastructure
 
 To remove all resources:
 
@@ -187,15 +160,3 @@ terraform destroy -auto-approve
 ```
 
 ---
-
-## 🛠️ Future Enhancements
-
-- Use autoscaling groups for Jenkins slaves
-- Integrate monitoring with Prometheus & Grafana
-- Use Helm to deploy Jenkins on EKS instead of EC2
-
----
-
-## 📩 Support
-
-Have questions? Open an issue or reach out to your DevOps team.
