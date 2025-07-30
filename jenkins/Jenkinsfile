@@ -1,4 +1,4 @@
-@Library('cloud_devops_project') _
+@Library('cloud_ devops_project') _
 
 pipeline {
   agent { label 'agent-vm' }
