@@ -274,7 +274,7 @@ kubectl rollout restart deployment grafana -n monitoring
 
 ---
 
-## 📧 5. Add Email Contact Point in Grafana
+## 5. Add Email Contact Point in Grafana
 
 1. Open Grafana UI → Alerting → **Contact Points**
 2. Click `New contact point`
@@ -285,7 +285,7 @@ kubectl rollout restart deployment grafana -n monitoring
 
 ---
 
-## 🧠 6. Create Alert Rule
+## 6. Create Alert Rule
 
 1. Go to **Alerting → Alert Rules**
 2. Click `New alert rule`
