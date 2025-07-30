@@ -216,7 +216,7 @@ Once Grafana is running:
 
 ---
 
-## Email Notification Setup in Grafana
+## Step 6: Email Notification Setup in Grafana
 
 1. Create Grafana config (`grafana.ini`) :
 
@@ -274,7 +274,7 @@ kubectl rollout restart deployment grafana -n monitoring
 
 ---
 
-## 5. Add Email Contact Point in Grafana
+## Step 7: Add Email Contact Point in Grafana
 
 1. Open Grafana UI → Alerting → **Contact Points**
 2. Click `New contact point`
@@ -285,7 +285,7 @@ kubectl rollout restart deployment grafana -n monitoring
 
 ---
 
-## 6. Create Alert Rule
+## Step 8: Create Alert Rule
 
 1. Go to **Alerting → Alert Rules**
 2. Click `New alert rule`
@@ -316,7 +316,7 @@ increase(default_jenkins_builds_failed_build_count_total{jenkins_job="Cloud Devo
 
 ---
 
-## 7. Test
+## Step 9: Test
 
 Trigger a failing Jenkins job and verify:
 
