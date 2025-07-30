@@ -140,9 +140,7 @@ kubectl edit configmap prometheus-server -n monitoring
 
 ---
 
-## Install Grafana Separately
-
-You can optionally install Grafana standalone with SMTP config.
+## Install Grafana
 
 1. Create `grafana-values.yaml`:
 
