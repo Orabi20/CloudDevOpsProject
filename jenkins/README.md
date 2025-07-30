@@ -94,7 +94,7 @@ To execute CI/CD pipeline stages, Jenkins must have at least one functional buil
 * Type: Permanent Agent
 * Configure:
 
-  * # of executors: 1 or more
+  * of executors: 1 or more
   * Remote root directory: `/home/jenkins_home`
   * Launch method: Launch agent via SSH
   * Host: `<IP or hostname>`
